@@ -23,16 +23,19 @@ namespace GameOfLifeEventDriven
     {
         private readonly Dictionary<Position, Cell> _cells;
 
+        public event EventHandler<IterationEventArgs> RaiseIterationEvent;
+
         public Game()
         {
             _cells = new Dictionary<Position, Cell>
             {
-                { new Position(0, 0), new Cell()}
+                { new Position(0, 0), new Cell(this)}
             };
         }
 
         public void IterateGeneration()
         {
+            RaiseIterationEvent(this, new IterationEventArgs(0));
         }
 
         public ReadOnlyDictionary<Position, Cell> Cells => _cells.AsReadOnly();
@@ -54,11 +57,28 @@ namespace GameOfLifeEventDriven
     {
         private bool _isAlive;
 
-        public Cell()
+        public Cell(Game game)
         {
             _isAlive = true;
+            game.RaiseIterationEvent += HandleIterationEvent;
         }
 
         public bool IsAlive => _isAlive;
+
+        void HandleIterationEvent(object sender, IterationEventArgs e)
+        {
+            _isAlive = false;
+        }
+
+    }
+
+    public class IterationEventArgs : EventArgs
+    {
+        public IterationEventArgs(int number)
+        {
+            Number = number;
+        }
+
+        public int Number { get; set; }
     }
 }
