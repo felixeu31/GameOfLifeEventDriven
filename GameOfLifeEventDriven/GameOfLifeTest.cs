@@ -56,5 +56,26 @@ namespace GameOfLifeEventDriven
             // Assert
             game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
         }
+
+        [Fact]
+        public void live_cell_with_more_than_three_neighbours_dies_by_over_population()
+        {
+            // Arrange
+            Game game = new Game(3, 3,
+                new List<Position>
+                {
+                    new (0, 1),
+                    new (0, 2),
+                    new (1, 0),
+                    new (1, 1),
+                    new (1, 2)
+                });
+
+            // Act
+            game.IterateGeneration();
+
+            // Assert
+            game.Cells[new Position(0,1)].IsAlive.Should().BeFalse();
+        }
     }
 }
