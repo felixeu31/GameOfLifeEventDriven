@@ -30,7 +30,11 @@ public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHa
 
     public void Handle(Game.IterationStarted notification)
     {
-        if (LiveNeighbours() == 2 || LiveNeighbours() == 3)
+        if (_isAlive == false && LiveNeighbours() != 3)
+        {
+            _isAlive = false;
+        }
+        else if (LiveNeighbours() == 2 || LiveNeighbours() == 3)
         {
             _isAlive = true;
         }
