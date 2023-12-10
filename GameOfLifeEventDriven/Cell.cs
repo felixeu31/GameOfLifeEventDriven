@@ -1,20 +1,18 @@
 namespace GameOfLifeEventDriven;
 
-public class Cell
+public class Cell : INotificationHandler<Game.IterationStarted>
 {
     private bool _isAlive;
 
-    public Cell(Game game)
+    public Cell()
     {
         _isAlive = true;
-        game.RaiseIterationEvent += HandleIterationEvent;
     }
 
     public bool IsAlive => _isAlive;
 
-    void HandleIterationEvent(object sender, IterationEventArgs e)
+    public void Handle(Game.IterationStarted notification)
     {
         _isAlive = false;
     }
-
 }
