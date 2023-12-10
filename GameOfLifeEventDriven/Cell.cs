@@ -4,7 +4,7 @@ public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHa
 {
     private bool _isAlive;
     public readonly Position _position;
-    private readonly Dictionary<Position, Cell> _neighbours = new();
+    private readonly List<Cell> _neighbours = new();
 
     private Cell(bool isAlive, Position position)
     {
@@ -25,7 +25,7 @@ public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHa
     public Position Position => _position;
     private int LiveNeighbours()
     {
-        return _neighbours.Count(x => x.Value.IsAlive);
+        return _neighbours.Count(x => x.IsAlive);
     }
 
     public void Handle(Game.IterationStarted notification)
@@ -42,9 +42,9 @@ public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHa
 
     public void Handle(Game.NewNeighbour notification)
     {
-        if (notification.Position != _position)
+        if (notification.Cell.Position != _position)
         {
-            _neighbours[notification.Position] = notification.Cell;
+            _neighbours.Add(notification.Cell);
         }
     }
 }

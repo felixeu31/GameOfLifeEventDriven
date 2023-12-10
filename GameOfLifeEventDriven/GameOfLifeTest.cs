@@ -38,6 +38,25 @@ namespace GameOfLifeEventDriven
         }
 
         [Fact]
+        public void last_introduced_live_cell_with_two_living_neighbours_lives()
+        {
+            // Arrange
+            Game game = new Game(2, 2,
+                new List<Position>
+                {
+                    new (0, 0),
+                    new (1, 0),
+                    new (0, 1)
+                });
+
+            // Act
+            game.IterateGeneration();
+
+            // Assert
+            game.Cells[new Position(0, 1)].IsAlive.Should().BeTrue();
+        }
+
+        [Fact]
         public void live_cell_with_three_neighbours_lives()
         {
             // Arrange
@@ -97,22 +116,22 @@ namespace GameOfLifeEventDriven
         }
 
 
-        [Fact]
-        public void dead_cell_with_two_living_neighbours_remains_dead()
-        {
-            // Arrange
-            Game game = new Game(2, 2,
-                new List<Position>
-                {
-                    new (1, 0),
-                    new (0, 1)
-                });
+        //[Fact]
+        //public void dead_cell_with_two_living_neighbours_remains_dead()
+        //{
+        //    // Arrange
+        //    Game game = new Game(2, 2,
+        //        new List<Position>
+        //        {
+        //            new (1, 0),
+        //            new (0, 1)
+        //        });
 
-            // Act
-            game.IterateGeneration();
+        //    // Act
+        //    game.IterateGeneration();
 
-            // Assert
-            game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
-        }
+        //    // Assert
+        //    game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
+        //}
     }
 }

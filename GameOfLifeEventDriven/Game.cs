@@ -21,9 +21,13 @@ public class Game
                 Cell cell = livingPositions.Contains(position) ? Cell.LiveCell(position) : Cell.DeadCell(position);
                 _mediator.Subscribe<IterationStarted>(cell);
                 _mediator.Subscribe<NewNeighbour>(cell);
-                _mediator.Publish(new NewNeighbour(position, cell));
                 _cells.Add(cell);
             }
+        }
+
+        foreach (var cell in _cells)
+        {
+            _mediator.Publish(new NewNeighbour(cell));
         }
     }
 
@@ -36,5 +40,5 @@ public class Game
 
     public record IterationStarted;
 
-    public record NewNeighbour(Position Position, Cell Cell);
+    public record NewNeighbour(Cell Cell);
 }
