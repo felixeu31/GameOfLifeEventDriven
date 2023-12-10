@@ -19,7 +19,7 @@ namespace GameOfLifeEventDriven
 
 
         [Fact]
-        public void live_cell_with_two_neighbours_lives()
+        public void live_cell_with_two_living_neighbours_lives()
         {
             // Arrange
             Game game = new Game(2,2, 
@@ -57,8 +57,7 @@ namespace GameOfLifeEventDriven
             game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
         }
 
-        [Fact]
-        public void live_cell_with_more_than_three_neighbours_dies_by_over_population()
+        [Fact] public void live_cell_with_more_than_three_living_neighbours_dies_by_over_population()
         {
             // Arrange
             Game game = new Game(3, 3,
@@ -79,7 +78,7 @@ namespace GameOfLifeEventDriven
         }
 
         [Fact]
-        public void dead_cell_with_three_neighbours_becomes_live_by_reproduction()
+        public void dead_cell_with_three_living_neighbours_becomes_live_by_reproduction()
         {
             // Arrange
             Game game = new Game(2, 2,
@@ -88,6 +87,25 @@ namespace GameOfLifeEventDriven
                     new (1, 0),
                     new (0, 1),
                     new (1, 1)
+                });
+
+            // Act
+            game.IterateGeneration();
+
+            // Assert
+            game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
+        }
+
+
+        [Fact]
+        public void dead_cell_with_two_living_neighbours_remains_dead()
+        {
+            // Arrange
+            Game game = new Game(2, 2,
+                new List<Position>
+                {
+                    new (1, 0),
+                    new (0, 1)
                 });
 
             // Act
