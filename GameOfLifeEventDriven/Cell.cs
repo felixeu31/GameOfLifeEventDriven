@@ -23,10 +23,14 @@ public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHa
 
     public bool IsAlive => _isAlive;
     public Position Position => _position;
+    private int LiveNeighbours()
+    {
+        return _neighbours.Count(x => x.Value.IsAlive);
+    }
 
     public void Handle(Game.IterationStarted notification)
     {
-        if (_neighbours.Count(x => x.Value.IsAlive) == 2)
+        if (LiveNeighbours() == 2 || LiveNeighbours() == 3)
         {
             _isAlive = true;
         }
