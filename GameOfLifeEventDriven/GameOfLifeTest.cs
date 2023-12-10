@@ -8,13 +8,33 @@ namespace GameOfLifeEventDriven
         public void lonely_cell_dies_by_underpopulation()
         {
             // Arrange
-            Game game = new Game();
+            Game game = new Game(1, 1, new List<Position>());
 
             // Act
             game.IterateGeneration();
 
             // Assert
-            game.Cells.FirstOrDefault().Value.IsAlive.Should().BeFalse();
+            game.Cells[new Position(0, 0)].IsAlive.Should().BeFalse();
+        }
+
+
+        [Fact]
+        public void live_cell_with_two_neighbours_lives()
+        {
+            // Arrange
+            Game game = new Game(2,2, 
+                new List<Position>
+                {
+                    new (0, 0),
+                    new (1, 0),
+                    new (0, 1)
+                });
+
+            // Act
+            game.IterateGeneration();
+
+            // Assert
+            game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
         }
     }
 }

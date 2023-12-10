@@ -1,18 +1,46 @@
 namespace GameOfLifeEventDriven;
 
-public class Cell : INotificationHandler<Game.IterationStarted>
+public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHandler<Game.NewNeighbour>
 {
     private bool _isAlive;
+    public readonly Position _position;
+    private readonly Dictionary<Position, Cell> _neighbours = new();
 
-    public Cell()
+    private Cell(bool isAlive, Position position)
     {
-        _isAlive = true;
+        _isAlive = isAlive;
+        _position = position;
+    }
+
+    public static Cell LiveCell(Position position)
+    {
+        return new Cell(true, position);
+    }
+    public static Cell DeadCell(Position position)
+    {
+        return new Cell(false, position);
     }
 
     public bool IsAlive => _isAlive;
+    public Position Position => _position;
 
     public void Handle(Game.IterationStarted notification)
     {
-        _isAlive = false;
+        if (_neighbours.Count(x => x.Value.IsAlive) == 2)
+        {
+            _isAlive = true;
+        }
+        else
+        {
+            _isAlive = false;
+        }
+    }
+
+    public void Handle(Game.NewNeighbour notification)
+    {
+        if (notification.Position != _position)
+        {
+            _neighbours[notification.Position] = notification.Cell;
+        }
     }
 }
