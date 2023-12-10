@@ -115,6 +115,28 @@ namespace GameOfLifeEventDriven
             game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
         }
 
+        [Fact]
+        public void live_cell_with_three_living_neighbour_but_other_living_cells_lives_because_is_only_affected_by_neighbours()
+        {
+            // Arrange
+            Game game = new Game(3, 3,
+                new List<Position>
+                {
+                    new (0, 0),
+                    new (0, 1),
+                    new (0, 2),
+                    new (1, 0),
+                    new (1, 1),
+                    new (1, 2)
+                });
+
+            // Act
+            game.IterateGeneration();
+
+            // Assert
+            game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
+        }
+
 
         //[Fact]
         //public void dead_cell_with_two_living_neighbours_remains_dead()
