@@ -42,7 +42,7 @@ public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHa
 
     public void Handle(Game.NewNeighbour notification)
     {
-        if (notification.Cell.Position != _position)
+        if (_position.IsNeighbourOf(notification.Cell.Position))
         {
             _neighbours.Add(notification.Cell);
         }
