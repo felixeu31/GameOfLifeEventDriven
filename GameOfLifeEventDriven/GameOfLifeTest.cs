@@ -157,7 +157,7 @@ namespace GameOfLifeEventDriven
         }
 
         [Fact]
-        public void live_cell_die_after_two_generations()
+        public void cells_progress_across_multiple_generations()
         {
             // Arrange
             Game game = new Game(3, 3,
@@ -170,7 +170,7 @@ namespace GameOfLifeEventDriven
                     new (2, 1)
                 });
 
-            // Act
+            // Act, assert
             game.IterateGeneration();
             game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
             game.Cells[new Position(0, 1)].IsAlive.Should().BeTrue();
@@ -181,8 +181,8 @@ namespace GameOfLifeEventDriven
             game.Cells[new Position(2, 0)].IsAlive.Should().BeFalse();
             game.Cells[new Position(2, 1)].IsAlive.Should().BeTrue();
             game.Cells[new Position(2, 2)].IsAlive.Should().BeTrue();
+
             game.IterateGeneration();
-            // Assert
             game.Cells[new Position(0, 0)].IsAlive.Should().BeFalse();
             game.Cells[new Position(0, 1)].IsAlive.Should().BeTrue();
             game.Cells[new Position(0, 2)].IsAlive.Should().BeTrue();
@@ -192,6 +192,17 @@ namespace GameOfLifeEventDriven
             game.Cells[new Position(2, 0)].IsAlive.Should().BeFalse();
             game.Cells[new Position(2, 1)].IsAlive.Should().BeTrue();
             game.Cells[new Position(2, 2)].IsAlive.Should().BeTrue();
+
+            game.IterateGeneration();
+            game.Cells[new Position(0, 0)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(0, 1)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(0, 2)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(1, 0)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(1, 1)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(1, 2)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(2, 0)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(2, 1)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(2, 2)].IsAlive.Should().BeFalse();
         }
     }
 }
