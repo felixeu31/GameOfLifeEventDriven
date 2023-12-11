@@ -14,7 +14,7 @@ namespace GameOfLifeEventDriven
             game.IterateGeneration();
 
             // Assert
-            game.Cells[new Position(0, 0)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(0, 0)].CellState.Should().Be(CellState.Dead);
         }
 
 
@@ -34,7 +34,7 @@ namespace GameOfLifeEventDriven
             game.IterateGeneration();
 
             // Assert
-            game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(0, 0)].CellState.Should().Be(CellState.Alive);
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace GameOfLifeEventDriven
             game.IterateGeneration();
 
             // Assert
-            game.Cells[new Position(0, 1)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(0, 1)].CellState.Should().Be(CellState.Alive);
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace GameOfLifeEventDriven
             game.IterateGeneration();
 
             // Assert
-            game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(0, 0)].CellState.Should().Be(CellState.Alive);
         }
 
         [Fact] public void live_cell_with_more_than_three_living_neighbours_dies_by_over_population()
@@ -93,7 +93,7 @@ namespace GameOfLifeEventDriven
             game.IterateGeneration();
 
             // Assert
-            game.Cells[new Position(0,1)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(0,1)].CellState.Should().Be(CellState.Dead);
         }
 
         [Fact]
@@ -112,7 +112,7 @@ namespace GameOfLifeEventDriven
             game.IterateGeneration();
 
             // Assert
-            game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(0, 0)].CellState.Should().Be(CellState.Alive);
         }
 
         [Fact]
@@ -134,7 +134,7 @@ namespace GameOfLifeEventDriven
             game.IterateGeneration();
 
             // Assert
-            game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(0, 0)].CellState.Should().Be(CellState.Alive);
         }
 
 
@@ -153,7 +153,7 @@ namespace GameOfLifeEventDriven
             game.IterateGeneration();
 
             // Assert
-            game.Cells[new Position(0, 0)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(0, 0)].CellState.Should().Be(CellState.Dead);
         }
 
         [Fact]
@@ -172,37 +172,37 @@ namespace GameOfLifeEventDriven
 
             // Act, assert
             game.IterateGeneration();
-            game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
-            game.Cells[new Position(0, 1)].IsAlive.Should().BeTrue();
-            game.Cells[new Position(0, 2)].IsAlive.Should().BeTrue();
-            game.Cells[new Position(1, 0)].IsAlive.Should().BeFalse();
-            game.Cells[new Position(1, 1)].IsAlive.Should().BeFalse();
-            game.Cells[new Position(1, 2)].IsAlive.Should().BeTrue();
-            game.Cells[new Position(2, 0)].IsAlive.Should().BeFalse();
-            game.Cells[new Position(2, 1)].IsAlive.Should().BeTrue();
-            game.Cells[new Position(2, 2)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(0, 0)].CellState.Should().Be(CellState.Alive);
+            game.Cells[new Position(0, 1)].CellState.Should().Be(CellState.Alive);
+            game.Cells[new Position(0, 2)].CellState.Should().Be(CellState.Alive);
+            game.Cells[new Position(1, 0)].CellState.Should().Be(CellState.Dead);
+            game.Cells[new Position(1, 1)].CellState.Should().Be(CellState.Dead);
+            game.Cells[new Position(1, 2)].CellState.Should().Be(CellState.Alive);
+            game.Cells[new Position(2, 0)].CellState.Should().Be(CellState.Dead);
+            game.Cells[new Position(2, 1)].CellState.Should().Be(CellState.Alive);
+            game.Cells[new Position(2, 2)].CellState.Should().Be(CellState.Alive);
 
             game.IterateGeneration();
-            game.Cells[new Position(0, 0)].IsAlive.Should().BeFalse();
-            game.Cells[new Position(0, 1)].IsAlive.Should().BeTrue();
-            game.Cells[new Position(0, 2)].IsAlive.Should().BeTrue();
-            game.Cells[new Position(1, 0)].IsAlive.Should().BeTrue();
-            game.Cells[new Position(1, 1)].IsAlive.Should().BeFalse();
-            game.Cells[new Position(1, 2)].IsAlive.Should().BeFalse();
-            game.Cells[new Position(2, 0)].IsAlive.Should().BeFalse();
-            game.Cells[new Position(2, 1)].IsAlive.Should().BeTrue();
-            game.Cells[new Position(2, 2)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(0, 0)].CellState.Should().Be(CellState.Dead);
+            game.Cells[new Position(0, 1)].CellState.Should().Be(CellState.Alive);
+            game.Cells[new Position(0, 2)].CellState.Should().Be(CellState.Alive);
+            game.Cells[new Position(1, 0)].CellState.Should().Be(CellState.Alive);
+            game.Cells[new Position(1, 1)].CellState.Should().Be(CellState.Dead);
+            game.Cells[new Position(1, 2)].CellState.Should().Be(CellState.Dead);
+            game.Cells[new Position(2, 0)].CellState.Should().Be(CellState.Dead);
+            game.Cells[new Position(2, 1)].CellState.Should().Be(CellState.Alive);
+            game.Cells[new Position(2, 2)].CellState.Should().Be(CellState.Alive);
 
             game.IterateGeneration();
-            game.Cells[new Position(0, 0)].IsAlive.Should().BeFalse();
-            game.Cells[new Position(0, 1)].IsAlive.Should().BeTrue();
-            game.Cells[new Position(0, 2)].IsAlive.Should().BeFalse();
-            game.Cells[new Position(1, 0)].IsAlive.Should().BeTrue();
-            game.Cells[new Position(1, 1)].IsAlive.Should().BeFalse();
-            game.Cells[new Position(1, 2)].IsAlive.Should().BeFalse();
-            game.Cells[new Position(2, 0)].IsAlive.Should().BeFalse();
-            game.Cells[new Position(2, 1)].IsAlive.Should().BeTrue();
-            game.Cells[new Position(2, 2)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(0, 0)].CellState.Should().Be(CellState.Dead);
+            game.Cells[new Position(0, 1)].CellState.Should().Be(CellState.Alive);
+            game.Cells[new Position(0, 2)].CellState.Should().Be(CellState.Dead);
+            game.Cells[new Position(1, 0)].CellState.Should().Be(CellState.Alive);
+            game.Cells[new Position(1, 1)].CellState.Should().Be(CellState.Dead);
+            game.Cells[new Position(1, 2)].CellState.Should().Be(CellState.Dead);
+            game.Cells[new Position(2, 0)].CellState.Should().Be(CellState.Dead);
+            game.Cells[new Position(2, 1)].CellState.Should().Be(CellState.Alive);
+            game.Cells[new Position(2, 2)].CellState.Should().Be(CellState.Dead);
         }
     }
 }

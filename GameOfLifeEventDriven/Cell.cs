@@ -2,48 +2,48 @@ namespace GameOfLifeEventDriven;
 
 public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHandler<Game.CellStateChanged>
 {
-    private bool _isAlive;
+    private CellState _cellState;
     public readonly Position _position;
     private readonly Mediator _mediator;
-    private readonly Dictionary<Position, bool> _neighbours = new();
+    private readonly Dictionary<Position, CellState> _neighbours = new();
 
-    private Cell(bool isAlive, Position position, Mediator mediator)
+    private Cell(CellState cellState, Position position, Mediator mediator)
     {
-        _isAlive = isAlive;
+        _cellState = cellState;
         _position = position;
         _mediator = mediator;
     }
 
     public static Cell LiveCell(Position position, Mediator mediator)
     {
-        return new Cell(true, position, mediator);
+        return new Cell(CellState.Alive, position, mediator);
     }
     public static Cell DeadCell(Position position, Mediator mediator)
     {
-        return new Cell(false, position, mediator);
+        return new Cell(CellState.Dead, position, mediator);
     }
 
-    public bool IsAlive => _isAlive;
+    public CellState CellState => _cellState;
     public Position Position => _position;
     private int LiveNeighbours()
     {
-        return _neighbours.Count(x => x.Value);
+        return _neighbours.Count(x => x.Value.Equals(CellState.Alive));
     }
 
     public void Handle(Game.IterationStarted notification)
     {
-        bool nextState;
-        if (_isAlive == false && LiveNeighbours() != 3)
+        CellState nextState;
+        if (_cellState == CellState.Dead && LiveNeighbours() != 3)
         {
-            nextState = false;
+            nextState = CellState.Dead;
         }
         else if (LiveNeighbours() == 2 || LiveNeighbours() == 3)
         {
-            nextState = true;
+            nextState = CellState.Alive;
         }
         else
         {
-            nextState = false;
+            nextState = CellState.Dead;
         }
 
         _mediator.Publish(new CellNextState(_position, nextState));
@@ -53,14 +53,20 @@ public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHa
     {
         if (_position.Equals(notification.Position))
         {
-            _isAlive = notification.IsAlive;
+            _cellState = notification.CellState;
         }
 
         if (_position.IsNeighbourOf(notification.Position))
         {
-            _neighbours[notification.Position] = notification.IsAlive;
+            _neighbours[notification.Position] = notification.CellState;
         }
     }
 
-    public record CellNextState(Position Position, bool IsAlive);
+    public record CellNextState(Position Position, CellState CellState);
+}
+
+public enum CellState
+{
+    Alive,
+    Dead
 }

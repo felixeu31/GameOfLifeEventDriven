@@ -7,7 +7,7 @@ public class Game : INotificationHandler<Cell.CellNextState>
 {
     private readonly List<Cell> _cells = new ();
     private readonly Mediator _mediator;
-    private Dictionary<Position, bool> _nextCellsStates = new();
+    private Dictionary<Position, CellState> _nextCellsStates = new();
 
 
     public Game(int rows, int columns, List<Position> livingPositions)
@@ -32,7 +32,7 @@ public class Game : INotificationHandler<Cell.CellNextState>
 
         foreach (var cell in _cells)
         {
-            _mediator.Publish(new CellStateChanged(cell.Position, cell.IsAlive));
+            _mediator.Publish(new CellStateChanged(cell.Position, cell.CellState));
         }
     }
 
@@ -45,11 +45,11 @@ public class Game : INotificationHandler<Cell.CellNextState>
 
     public record IterationStarted;
 
-    public record CellStateChanged(Position Position, bool IsAlive);
+    public record CellStateChanged(Position Position, CellState CellState);
 
     public void Handle(Cell.CellNextState notification)
     {
-        _nextCellsStates[notification.Position] = notification.IsAlive;
+        _nextCellsStates[notification.Position] = notification.CellState;
 
         if (AllCellsCalculatedItsNextState())
         {
