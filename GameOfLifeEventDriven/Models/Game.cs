@@ -18,20 +18,30 @@ public class Game : INotificationHandler<NextCellStateCalculatedEvent>
 
         _mediator.Subscribe<NextCellStateCalculatedEvent>(this);
 
+        BuildGameCells(rows, columns, livingPositions);
+
+        PublishInitialCellStates();
+    }
+
+    private void BuildGameCells(int rows, int columns, List<Position> livingPositions)
+    {
         for (int row = 0; row < rows; row++)
         {
             for (int column = 0; column < columns; column++)
             {
                 var position = new Position(row, column);
-                Cell cell = livingPositions.Contains(position) ?
-                    Cell.LiveCell(position, _mediator)
+                Cell cell = livingPositions.Contains(position)
+                    ? Cell.LiveCell(position, _mediator)
                     : Cell.DeadCell(position, _mediator);
                 _mediator.Subscribe<IterationStartedEvent>(cell);
                 _mediator.Subscribe<CellStateChangedEvent>(cell);
                 _cells.Add(cell);
             }
         }
+    }
 
+    private void PublishInitialCellStates()
+    {
         foreach (var cell in _cells)
         {
             _mediator.Publish(new CellStateChangedEvent(cell.Position, cell.CellState));
@@ -44,7 +54,6 @@ public class Game : INotificationHandler<NextCellStateCalculatedEvent>
     }
 
     public ReadOnlyDictionary<Position, Cell> Cells => _cells.ToDictionary(x => x.Position, x => x).AsReadOnly();
-
 
 
     public void Handle(NextCellStateCalculatedEvent notification)
