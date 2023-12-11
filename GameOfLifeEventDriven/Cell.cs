@@ -1,6 +1,6 @@
 namespace GameOfLifeEventDriven;
 
-public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHandler<Game.CellStateChanged>
+public class Cell : INotificationHandler<IterationStarted>, INotificationHandler<CellStateChanged>
 {
     private CellState _cellState;
     public readonly Position _position;
@@ -30,7 +30,7 @@ public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHa
         return _neighbours.Count(x => x.Value.Equals(CellState.Alive));
     }
 
-    public void Handle(Game.IterationStarted notification)
+    public void Handle(IterationStarted notification)
     {
         CellState nextState;
         if (_cellState == CellState.Dead && LiveNeighbours() != 3)
@@ -49,7 +49,7 @@ public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHa
         _mediator.Publish(new CellNextState(_position, nextState));
     }
 
-    public void Handle(Game.CellStateChanged notification)
+    public void Handle(CellStateChanged notification)
     {
         if (_position.Equals(notification.Position))
         {
@@ -62,11 +62,4 @@ public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHa
         }
     }
 
-    public record CellNextState(Position Position, CellState CellState);
-}
-
-public enum CellState
-{
-    Alive,
-    Dead
 }

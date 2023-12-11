@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace GameOfLifeEventDriven;
 
-public class Game : INotificationHandler<Cell.CellNextState>
+public class Game : INotificationHandler<CellNextState>
 {
     private readonly List<Cell> _cells = new ();
     private readonly Mediator _mediator;
@@ -14,7 +14,7 @@ public class Game : INotificationHandler<Cell.CellNextState>
     {
         _mediator = new Mediator();
 
-        _mediator.Subscribe<Cell.CellNextState>(this);
+        _mediator.Subscribe<CellNextState>(this);
 
         for (int row = 0; row < rows; row++)
         {
@@ -43,11 +43,9 @@ public class Game : INotificationHandler<Cell.CellNextState>
 
     public ReadOnlyDictionary<Position, Cell> Cells => _cells.ToDictionary(x => x.Position, x => x).AsReadOnly();
 
-    public record IterationStarted;
 
-    public record CellStateChanged(Position Position, CellState CellState);
 
-    public void Handle(Cell.CellNextState notification)
+    public void Handle(CellNextState notification)
     {
         _nextCellsStates[notification.Position] = notification.CellState;
 
