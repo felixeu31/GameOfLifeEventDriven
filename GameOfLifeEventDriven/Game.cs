@@ -7,7 +7,7 @@ public class Game : INotificationHandler<Cell.CellNextState>
 {
     private readonly List<Cell> _cells = new ();
     private readonly Mediator _mediator;
-    private Dictionary<Position, bool> _nextCellsStates;
+    private Dictionary<Position, bool> _nextCellsStates = new();
 
 
     public Game(int rows, int columns, List<Position> livingPositions)
@@ -25,20 +25,19 @@ public class Game : INotificationHandler<Cell.CellNextState>
                     Cell.LiveCell(position, _mediator) 
                     : Cell.DeadCell(position, _mediator);
                 _mediator.Subscribe<IterationStarted>(cell);
-                _mediator.Subscribe<CellChange>(cell);
+                _mediator.Subscribe<CellStateChanged>(cell);
                 _cells.Add(cell);
             }
         }
 
         foreach (var cell in _cells)
         {
-            _mediator.Publish(new CellChange(cell.Position, cell.IsAlive));
+            _mediator.Publish(new CellStateChanged(cell.Position, cell.IsAlive));
         }
     }
 
     public void IterateGeneration()
     {
-        _nextCellsStates = new ();
         _mediator.Publish(new IterationStarted());
     }
 
@@ -46,17 +45,29 @@ public class Game : INotificationHandler<Cell.CellNextState>
 
     public record IterationStarted;
 
-    public record CellChange(Position Position, bool IsAlive);
+    public record CellStateChanged(Position Position, bool IsAlive);
 
     public void Handle(Cell.CellNextState notification)
     {
         _nextCellsStates[notification.Position] = notification.IsAlive;
 
-        if (_nextCellsStates.Count != _cells.Count) return;
+        if (AllCellsCalculatedItsNextState())
+        {
+            FinishIteration();
+        }
+    }
 
+    private void FinishIteration()
+    {
         foreach (var cell in _nextCellsStates)
         {
-            _mediator.Publish(new CellChange(cell.Key, cell.Value));
+            _mediator.Publish(new CellStateChanged(cell.Key, cell.Value));
         }
+        _nextCellsStates = new();
+    }
+
+    private bool AllCellsCalculatedItsNextState()
+    {
+        return _nextCellsStates.Count == _cells.Count;
     }
 }

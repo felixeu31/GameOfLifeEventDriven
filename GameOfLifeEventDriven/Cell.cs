@@ -1,6 +1,6 @@
 namespace GameOfLifeEventDriven;
 
-public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHandler<Game.CellChange>
+public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHandler<Game.CellStateChanged>
 {
     private bool _isAlive;
     public readonly Position _position;
@@ -49,9 +49,9 @@ public class Cell : INotificationHandler<Game.IterationStarted>, INotificationHa
         _mediator.Publish(new CellNextState(_position, nextState));
     }
 
-    public void Handle(Game.CellChange notification)
+    public void Handle(Game.CellStateChanged notification)
     {
-        if (_position.ItsMe(notification.Position))
+        if (_position.Equals(notification.Position))
         {
             _isAlive = notification.IsAlive;
         }

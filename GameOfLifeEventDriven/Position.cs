@@ -15,9 +15,4 @@ public record Position(int Row, int Column)
 
         return false;
     }
-
-    public bool ItsMe(Position notificationPosition)
-    {
-        return this == notificationPosition;
-    }
 }
