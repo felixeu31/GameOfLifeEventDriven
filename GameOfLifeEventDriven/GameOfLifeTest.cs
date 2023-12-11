@@ -155,5 +155,43 @@ namespace GameOfLifeEventDriven
             // Assert
             game.Cells[new Position(0, 0)].IsAlive.Should().BeFalse();
         }
+
+        [Fact]
+        public void live_cell_die_after_two_generations()
+        {
+            // Arrange
+            Game game = new Game(3, 3,
+                new List<Position>
+                {
+                    new (0, 0),
+                    new (0, 1),
+                    new (1, 1),
+                    new (1, 2),
+                    new (2, 1)
+                });
+
+            // Act
+            game.IterateGeneration();
+            game.Cells[new Position(0, 0)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(0, 1)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(0, 2)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(1, 0)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(1, 1)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(1, 2)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(2, 0)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(2, 1)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(2, 2)].IsAlive.Should().BeTrue();
+            game.IterateGeneration();
+            // Assert
+            game.Cells[new Position(0, 0)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(0, 1)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(0, 2)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(1, 0)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(1, 1)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(1, 2)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(2, 0)].IsAlive.Should().BeFalse();
+            game.Cells[new Position(2, 1)].IsAlive.Should().BeTrue();
+            game.Cells[new Position(2, 2)].IsAlive.Should().BeTrue();
+        }
     }
 }
