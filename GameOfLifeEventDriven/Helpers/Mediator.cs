@@ -1,4 +1,6 @@
-namespace GameOfLifeEventDriven;
+using GameOfLifeEventDriven.Helpers;
+
+namespace GameOfLifeEventDriven.Helpers;
 
 public class Mediator
 {

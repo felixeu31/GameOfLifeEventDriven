@@ -1,4 +1,4 @@
-namespace GameOfLifeEventDriven;
+namespace GameOfLifeEventDriven.Models;
 
 public enum CellState
 {

@@ -1,4 +1,4 @@
-namespace GameOfLifeEventDriven;
+namespace GameOfLifeEventDriven.Helpers;
 
 public interface INotificationHandler<TNotification>
 {

@@ -1,6 +1,7 @@
 using FluentAssertions;
+using GameOfLifeEventDriven.Models;
 
-namespace GameOfLifeEventDriven
+namespace GameOfLifeEventDrivenTest
 {
     public class GameOfLifeTest
     {

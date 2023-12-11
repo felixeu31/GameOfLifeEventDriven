@@ -1,9 +1,12 @@
-namespace GameOfLifeEventDriven;
+using GameOfLifeEventDriven.Events;
+using GameOfLifeEventDriven.Helpers;
 
-public class Cell : INotificationHandler<IterationStarted>, INotificationHandler<CellStateChanged>
+namespace GameOfLifeEventDriven.Models;
+
+public class Cell : INotificationHandler<IterationStartedEvent>, INotificationHandler<CellStateChangedEvent>
 {
     private CellState _cellState;
-    public readonly Position _position;
+    private readonly Position _position;
     private readonly Mediator _mediator;
     private readonly Dictionary<Position, CellState> _neighbours = new();
 
@@ -30,7 +33,7 @@ public class Cell : INotificationHandler<IterationStarted>, INotificationHandler
         return _neighbours.Count(x => x.Value.Equals(CellState.Alive));
     }
 
-    public void Handle(IterationStarted notification)
+    public void Handle(IterationStartedEvent notification)
     {
         CellState nextState;
         if (_cellState == CellState.Dead && LiveNeighbours() != 3)
@@ -46,10 +49,10 @@ public class Cell : INotificationHandler<IterationStarted>, INotificationHandler
             nextState = CellState.Dead;
         }
 
-        _mediator.Publish(new CellNextState(_position, nextState));
+        _mediator.Publish(new NextCellStateCalculatedEvent(_position, nextState));
     }
 
-    public void Handle(CellStateChanged notification)
+    public void Handle(CellStateChangedEvent notification)
     {
         if (_position.Equals(notification.Position))
         {
